@@ -35,7 +35,7 @@ describe Telepath::Store do
 
   describe '.create' do
     it 'relays the new data store to new' do
-      expect(described_class).to receive(:new).with anything
+      stub(described_class).new(any(Object))
       described_class.create
     end
 

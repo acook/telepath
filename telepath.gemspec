@@ -33,7 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-theme'
   # testing
-  spec.add_development_dependency 'rspec', '~> 2'
-  #spec.add_development_dependency 'bogus'
+  spec.add_development_dependency 'rspec-core', '~> 2'
+  spec.add_development_dependency 'rspec-expectations', '~> 2'
+  spec.add_development_dependency 'bogus'
   #spec.add_development_dependency 'ffaker'
 end
