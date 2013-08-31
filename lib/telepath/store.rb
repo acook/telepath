@@ -4,9 +4,6 @@ require 'daybreak'
 module Telepath
   class Store
 
-    PATH_VAR = 'TELEPATH_PATH'
-    FILE_VAR = 'TELEPATH_FILE'
-    TYPE_VAR =
     DEFAULT_PATH = '~'
     DEFAULT_FILE = '.telepath.db'
     DEFAULT_TYPE = :Daybreak

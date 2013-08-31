@@ -1,14 +1,16 @@
 require_relative 'spec_helper'
 
 describe Telepath::Store do
-  it 'exists' do
-    expect(Telepath::Store).to be
-  end
+  def path_env_var; 'TELEPATH_PATH'; end
 
   subject(:storage){ described_class.new }
   let(:default_file){ '.telepath.db' }
   let(:default_path){ File.expand_path '~' }
   let(:default_location){ "#{default_path}/#{default_file}" }
+
+  it 'exists' do
+    expect(Telepath::Store).to be
+  end
 
   context 'with default location' do
     describe '#file' do
@@ -36,11 +38,11 @@ describe Telepath::Store do
 
       context 'invalid path' do
         before do
-          ENV[described_class::PATH_VAR] = '/this/path/doesnt/exist/hopefully'
+          ENV[path_env_var] = '/this/path/doesnt/exist/hopefully'
         end
 
         after do
-          ENV[described_class::PATH_VAR] = nil
+          ENV[path_env_var] = nil
         end
 
         specify { expect{path}.to raise_exception }
@@ -49,21 +51,16 @@ describe Telepath::Store do
   end
 
   context 'with test location' do
-    def test_path
-      Telepath.root.join 'tmp'
-    end
-
-    def test_file
-      test_path.join described_class.new.file
-    end
+    def test_path; Telepath.root.join 'tmp'; end
+    def test_file; test_path.join described_class.new.file; end
 
     before :all do
-      ENV[described_class::PATH_VAR] = test_path.to_s
+      ENV[path_env_var] = test_path.to_s
       test_file.delete if test_file.exist?
     end
 
     after :all do
-      ENV[described_class::PATH_VAR] = nil
+      ENV[path_env_var] = nil
       test_file.delete if test_file.exist?
     end
 
