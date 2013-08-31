@@ -2,6 +2,6 @@ require_relative 'spec_helper'
 
 describe Telepath do
   it 'exists' do
-    Telepath.should be
+    expect(Telepath).to be
   end
 end
