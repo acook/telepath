@@ -4,17 +4,30 @@ require 'daybreak'
 module Telepath
   class Store
 
+    PATH_VAR = 'TELEPATH_PATH'
+    FILE_VAR = 'TELEPATH_FILE'
+    DEFAULT_PATH = '~'
+    DEFAULT_FILE = '.telepath.db'
+
     class << self
       def path
-        Pathname.new('~/').expand_path
+        Pathname.new(ENV[PATH_VAR] || DEFAULT_PATH).expand_path
       end
 
       def file
-        '.telepath.db'
+        ENV[FILE_VAR] || DEFAULT_FILE
       end
 
       def location
-        path.join file
+        if path.exist? then
+          path.join file
+        else
+          raise <<-ERRMSG
+            Create or change the storage path for Telepath.
+            Current: `#{path}'
+            Environment Variable Name: `#{PATH_VAR}'
+          ERRMSG
+        end
       end
 
 
@@ -25,6 +38,10 @@ module Telepath
 
     def initialize store
       @store = store
+    end
+
+    def close
+      @store.close if @store
     end
 
     protected
