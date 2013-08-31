@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'daybreak'
 
   # commandline
-  #spec.add_dependency 'clamp'
+  spec.add_dependency 'clamp'
   #spec.add_dependency 'highline'
 
   # development
@@ -34,6 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry-theme'
   # testing
   spec.add_development_dependency 'rspec', '~> 2'
-  #spec.add_development_dependency 'bogus'
+  spec.add_development_dependency 'open4'
   #spec.add_development_dependency 'ffaker'
 end

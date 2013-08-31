@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/telepath'
+
+Telepath::Command.run
+
