@@ -32,3 +32,22 @@ What about shared, persistant, distributed, fully decorated multi-client multi-h
 
 Yeah thats pretty much what I thought. Now go change your pants, I'll still be here when you get back.
 
+
+Contributing
+------------
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+
+Who made this anyway?
+---------------------
+
+I'm glad you asked!
+
+    Anthony M. Cook 2013
+
+
