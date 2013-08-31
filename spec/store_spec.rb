@@ -5,29 +5,30 @@ describe Telepath::Store do
     expect(Telepath::Store).to be
   end
 
+  subject(:storage){ described_class.new }
   let(:default_file){ '.telepath.db' }
   let(:default_path){ File.expand_path '~' }
   let(:default_location){ "#{default_path}/#{default_file}" }
 
   context 'with default location' do
-    describe '.file' do
-      subject(:file){ described_class.file }
+    describe '#file' do
+      subject(:file){ storage.file }
 
       it 'matches defaults' do
         expect(file.to_s).to eq default_file
       end
     end
 
-    describe '.path' do
-      subject(:path){ described_class.path }
+    describe '#path' do
+      subject(:path){ storage.path }
 
       it 'defaults to home directory' do
         expect(path.to_s).to eq default_path
       end
     end
 
-    describe '.location' do
-      subject(:path){ described_class.location }
+    describe '#location' do
+      subject(:path){ storage.location }
 
       it 'defaults to a combination of the path and file' do
         expect(path.to_s).to eq default_location
@@ -53,7 +54,7 @@ describe Telepath::Store do
     end
 
     def test_file
-      test_path.join described_class.file
+      test_path.join described_class.new.file
     end
 
     before :all do
@@ -66,19 +67,13 @@ describe Telepath::Store do
       test_file.delete if test_file.exist?
     end
 
-    describe '.create' do
+    describe '.new' do
       before do
         Moneta.stub(:new) { 'test object' }
       end
 
-      it 'relays the new data store to new' do
-        expect(described_class).to receive(:new).with anything
-        described_class.create
-      end
-
       it 'assigns the store object' do
-        store = described_class.create
-        expect(store.send(:store)).to eq 'test object'
+        expect(storage.store).to eq 'test object'
       end
     end
   end

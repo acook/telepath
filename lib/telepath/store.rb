@@ -6,47 +6,52 @@ module Telepath
 
     PATH_VAR = 'TELEPATH_PATH'
     FILE_VAR = 'TELEPATH_FILE'
+    TYPE_VAR =
     DEFAULT_PATH = '~'
     DEFAULT_FILE = '.telepath.db'
+    DEFAULT_TYPE = :Daybreak
 
-    class << self
-      def path
-        Pathname.new(ENV[PATH_VAR] || DEFAULT_PATH).expand_path
-      end
+    def store
+      @store ||= create_store
+    end
 
-      def file
-        ENV[FILE_VAR] || DEFAULT_FILE
-      end
-
-      def location
-        if path.exist? then
-          path.join file
-        else
-          raise <<-ERRMSG
+    def location
+      if path.exist? then
+        path.join file
+      else
+        raise <<-ERRMSG
             Create or change the storage path for Telepath.
             Current: `#{path}'
             Environment Variable Name: `#{PATH_VAR}'
-          ERRMSG
-        end
-      end
-
-
-      def create
-        new Moneta.new :Daybreak, file: location
+        ERRMSG
       end
     end
 
-    def initialize store
-      @store = store
+    def path
+      @path ||= Pathname.new(get :path).expand_path
     end
 
-    def close
-      @store.close if @store
+    def file
+      @file ||= get :file
+    end
+
+    def type
+      @type ||= get :type
     end
 
     protected
 
-    attr_accessor :store
+    def create_store
+      Moneta.new type, file: location
+    end
+
+    def get name
+      env_name   = "TELEPATH_#{name.to_s.upcase}"
+      const_name = "DEFAULT_#{name.to_s.upcase}"
+      value      = ENV[env_name]
+
+      value && !value.empty? && value || self.class.const_get(const_name)
+    end
 
   end
 end
