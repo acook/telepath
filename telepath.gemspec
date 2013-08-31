@@ -18,12 +18,22 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
+  # storage
   spec.add_dependency 'moneta'
   spec.add_dependency 'daybreak'
 
+  # commandline
+  #spec.add_dependency 'clamp'
+  #spec.add_dependency 'highline'
+
+  # development
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec', '~> 2'
+  # debugging
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-theme'
+  # testing
+  spec.add_development_dependency 'rspec', '~> 2'
+  #spec.add_development_dependency 'bogus'
+  #spec.add_development_dependency 'ffaker'
 end
