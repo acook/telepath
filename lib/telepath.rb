@@ -1,5 +1,11 @@
+require 'pathname'
+
+require 'bundler/setup'
+
 require 'telepath/version'
 
 module Telepath
-  # Your code goes here...
+  def self.root
+    Pathname.new(__FILE__).dirname.expand_path.parent
+  end
 end
