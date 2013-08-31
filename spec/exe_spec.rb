@@ -9,4 +9,9 @@ describe 'Telepath Executable' do
   it 'runs' do
     expect(status).to be_success
   end
+
+  context 'invalid arguments' do
+    let(:args){ ['invalid_argument'] }
+    specify { expect(status).to_not be_success }
+  end
 end
