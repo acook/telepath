@@ -16,6 +16,12 @@ module Telepath
       store['stack'] || Array.new
     end
 
+    def ready?
+      !store.adapter.backend.closed?
+    end
+
+    ### -----
+
     def location
       if path.exist? then
         path.join file

@@ -10,7 +10,13 @@ module Telepath
 
       def execute
         handler = Telepath::Handler.new self
-        handler.add value
+        success, name = handler.add value
+
+        if success then
+          Out.info "Added `#{value}' to `#{name}'!"
+        else
+          Out.error "Could not add `#{value}' to `#{name}'!"
+        end
       end
     end
 
@@ -19,7 +25,13 @@ module Telepath
 
       def execute
         handler = Telepath::Handler.new self
-        handler.grab pattern
+        value = handler.grab pattern
+
+        if value && !value.empty? then
+          Out.data value
+        else
+          Out.error @command, "Pattern `#{pattern}' not matched."
+        end
       end
     end
 

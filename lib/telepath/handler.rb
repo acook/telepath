@@ -11,11 +11,11 @@ module Telepath
         container << value
       end
 
-      Out.info "Added `#{value}' to `#{name}'!"
+      [true, name]
     end
 
-    def grab pattern
-      value = with_store 'stack' do |container|
+    def grab pattern = nil
+      with_store 'stack' do |container|
 
         if pattern && !pattern.empty? then
           if container.include? pattern.to_s then
@@ -26,31 +26,31 @@ module Telepath
             end
           end
         else
-          stack.last
+          container.last
         end
 
       end
+    end
 
-      if value && !value.empty? then
-        Out.data value
+    def storage
+      if @storage && @storage.ready? then
+        @storage
       else
-        Out.error @command, "Pattern `#{pattern}' not matched."
+        @storage = Telepath::Storage.new
       end
     end
 
     protected
 
     def with_store name = 'stack'
-      $s = Telepath::Storage.new
-      store = $s.store
-      container = store[name] || Array.new
+      container = storage.store[name] || Array.new
 
       result = yield container
 
-      store[name] = container
+      storage.store[name] = container
       result
     ensure
-      store.close
+      storage.store.close
     end
   end
 end

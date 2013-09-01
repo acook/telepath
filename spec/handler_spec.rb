@@ -29,4 +29,23 @@ describe Telepath::Handler do
       expect(storage.stack).to include('whatever')
     end
   end
+
+  describe '#grab' do
+    before do
+      handler.add 'whatever'
+    end
+
+    it 'grabs last value' do
+      expect(handler.grab).to eq('whatever')
+    end
+
+    it 'does not delete the item' do
+      handler.add 'whatever'
+
+      expect{ handler.grab 'whatever' }.to change{
+        storage.store.adapter.backend.sunrise
+        storage.stack.length
+      }.by(0)
+    end
+  end
 end
