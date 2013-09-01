@@ -7,6 +7,11 @@ describe Telepath::Handler do
   subject(:handler){ described_class.new double(Clamp::Command) }
 
   let(:storage){ Telepath::Storage.new }
+  let(:value){ 'whatever' }
+
+  before do
+    handler.add value
+  end
 
   it 'exists' do
     expect(described_class).to be
@@ -18,30 +23,31 @@ describe Telepath::Handler do
 
   describe '#add' do
     it 'adds 1 item' do
-      expect{ handler.add 'whatever' }.to change{
+      expect{ handler.add 'something' }.to change{
         storage.store.adapter.backend.sunrise
         storage.stack.length
-      }.from(0).to(1)
+      }.from(1).to(2)
     end
 
     it 'adds the right item' do
-      handler.add 'whatever'
-      expect(storage.stack).to include('whatever')
+      handler.add 'something'
+      expect(storage.stack).to include('something')
     end
   end
 
   describe '#grab' do
-    let(:value){ 'whatever' }
-    before do
-      handler.add value
-    end
+  end
 
-    it 'grabs last value' do
-      expect(handler.grab).to eq(value)
+  describe '#index' do
+  end
+
+  describe '#lookup' do
+    it 'looks up last value' do
+      expect(handler.lookup).to eq(value)
     end
 
     it 'does not delete the item' do
-      expect{ handler.grab value }.to change{
+      expect{ handler.lookup value }.to change{
         storage.store.adapter.backend.sunrise
         storage.stack.length
       }.by(0)
@@ -49,14 +55,14 @@ describe Telepath::Handler do
 
     context 'pattern matching' do
       it 'matches substrings of words' do
-        expect(handler.grab('what')).to eq(value)
+        expect(handler.lookup('what')).to eq(value)
       end
 
       context 'numbers' do
         let(:value){ '12' }
 
         it 'matches parts of numbers' do
-          expect(handler.grab('1')).to eq(value)
+          expect(handler.lookup('1')).to eq(value)
         end
       end
     end

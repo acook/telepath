@@ -26,7 +26,7 @@ describe 'Telepath Executable' do
     specify { expect(status).to_not be_success }
   end
 
-  describe '+' do
+  describe '+ add' do
     let(:command){ :+ }
 
     context 'without value' do
@@ -44,8 +44,8 @@ describe 'Telepath Executable' do
     end
   end
 
-  describe '=' do
-    let(:command){ '=' }
+  describe '? lookup' do
+    let(:command){ '?' }
     let(:handler){ Telepath::Handler.new double(Clamp::Command) }
     let(:value){ '12' }
 

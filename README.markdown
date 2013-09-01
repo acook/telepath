@@ -63,7 +63,7 @@ Parameters:
 
 Subcommands:
     +                             Add item to Telepath
-    =                             Grab item from Telepath
+    ?                             Lookup item from Telepath
 
 Options:
     -q, --quiet                   Only output when absolutely necessary.

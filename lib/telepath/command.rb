@@ -20,12 +20,12 @@ module Telepath
       end
     end
 
-    subcommand ['='], 'Grab item from Telepath' do
+    subcommand ['?'], 'Lookup item from Telepath' do
       parameter '[PATTERN]', 'pattern to find'
 
       def execute
         handler = Telepath::Handler.new self
-        value = handler.grab pattern
+        value = handler.lookup pattern
 
         if value && !value.empty? then
           Out.data value

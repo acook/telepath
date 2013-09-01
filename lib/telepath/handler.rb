@@ -14,7 +14,7 @@ module Telepath
       [true, name]
     end
 
-    def grab pattern = nil
+    def lookup pattern = nil
       with_store 'stack' do |container|
 
         if pattern && !pattern.empty? then
