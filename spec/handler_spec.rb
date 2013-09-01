@@ -31,21 +31,34 @@ describe Telepath::Handler do
   end
 
   describe '#grab' do
+    let(:value){ 'whatever' }
     before do
-      handler.add 'whatever'
+      handler.add value
     end
 
     it 'grabs last value' do
-      expect(handler.grab).to eq('whatever')
+      expect(handler.grab).to eq(value)
     end
 
     it 'does not delete the item' do
-      handler.add 'whatever'
-
-      expect{ handler.grab 'whatever' }.to change{
+      expect{ handler.grab value }.to change{
         storage.store.adapter.backend.sunrise
         storage.stack.length
       }.by(0)
+    end
+
+    context 'pattern matching' do
+      it 'matches substrings of words' do
+        expect(handler.grab('what')).to eq(value)
+      end
+
+      context 'numbers' do
+        let(:value){ '12' }
+
+        it 'matches parts of numbers' do
+          expect(handler.grab('1')).to eq(value)
+        end
+      end
     end
   end
 end

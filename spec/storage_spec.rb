@@ -49,8 +49,6 @@ describe Telepath::Storage do
   end
 
   context 'with test location' do
-    def test_path; Telepath.root.join 'tmp'; end
-    def test_file; test_path.join described_class.new.file; end
 
     before :all do
       ENV[path_env_var] = test_path.to_s
