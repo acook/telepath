@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe Telepath::Store do
+describe Telepath::Storage do
   def path_env_var; 'TELEPATH_PATH'; end
 
   subject(:storage){ described_class.new }
@@ -9,7 +9,7 @@ describe Telepath::Store do
   let(:default_location){ "#{default_path}/#{default_file}" }
 
   it 'exists' do
-    expect(Telepath::Store).to be
+    expect(described_class).to be
   end
 
   context 'with default location' do
@@ -69,7 +69,7 @@ describe Telepath::Store do
         Moneta.stub(:new) { 'test object' }
       end
 
-      it 'assigns the store object' do
+      it 'creates a store object using Moneta' do
         expect(storage.store).to eq 'test object'
       end
     end

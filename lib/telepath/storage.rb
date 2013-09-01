@@ -2,7 +2,7 @@ require 'moneta'
 require 'daybreak'
 
 module Telepath
-  class Store
+  class Storage
 
     DEFAULT_PATH = '~'
     DEFAULT_FILE = '.telepath.db'
