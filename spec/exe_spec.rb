@@ -10,13 +10,11 @@ describe 'Telepath Executable' do
   let(:args){ [] }
 
   before do
-    ENV[path_env_var] = test_path.to_s
-    test_file.delete if test_file.exist?
+    pre_test_setup
   end
 
   after do
-    ENV[path_env_var] = nil
-    test_file.delete if test_file.exist?
+    post_test_teardown
   end
 
   it 'runs' do
@@ -65,7 +63,7 @@ describe 'Telepath Executable' do
 
       specify { expect(status).to be_success }
 
-      specify { binding.pry; expect(output.stdout).to eq "12\n" }
+      specify { expect(output.stdout).to eq "12\n" }
     end
   end
 end

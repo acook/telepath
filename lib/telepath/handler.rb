@@ -41,7 +41,7 @@ module Telepath
     protected
 
     def with_store name = 'stack'
-      $s = Storage.new
+      $s = Telepath::Storage.new
       store = $s.store
       container = store[name] || Array.new
 

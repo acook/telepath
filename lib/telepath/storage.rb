@@ -12,6 +12,10 @@ module Telepath
       @store ||= create_store
     end
 
+    def stack
+      store['stack'] || Array.new
+    end
+
     def location
       if path.exist? then
         path.join file
