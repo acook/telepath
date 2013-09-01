@@ -2,17 +2,17 @@ module Telepath
   module Out
     module_function
 
-    def info *args
-      puts args.flatten.join ' '
+    def info *messages
+      puts messages.flatten.join ' '
     end
 
-    def data *args
-      puts args.flatten
+    def data *messages
+      puts messages.flatten
     end
 
-    def error *args
-      command = args.shift if args.length > 1
-      raise Clamp::UsageError.new(args.flatten.join("\n"), command)
+    def error command, *messages
+      raise Clamp::UsageError.new(messages.flatten.join("\n"), command)
     end
+
   end
 end

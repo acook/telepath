@@ -2,8 +2,8 @@ require_relative 'spec_helper'
 
 describe 'Telepath Executable' do
   let(:exe){ run "./bin/tel #{command} #{args.join ' '}" }
-  let(:status){ exe.first }
-  let(:output){ exe.last }
+  let(:status){ exe.status }
+  let(:stdout){ exe.stdout.strip }
 
   # override these in context
   let(:command){ '' }
@@ -39,22 +39,25 @@ describe 'Telepath Executable' do
       specify { expect(status).to be_success }
 
       it 'adds the value to the stack' do
-        expect(output.stdout).to eq("Added `12' to `stack'!\n")
+        expect(stdout).to eq("Added `12' to `stack'!")
       end
     end
   end
 
   describe '=' do
     let(:command){ '=' }
+    let(:handler){ Telepath::Handler.new double(Clamp::Command) }
+    let(:value){ '12' }
+
+    before do
+      handler.add value
+    end
 
     context 'without parameters' do
       context 'with values in telepath' do
-        before do
-          Telepath::Storage.new.store['stack'] = ['12']
-        end
 
         specify { expect(status).to be_success }
-        specify { expect(output.stdout).to eq "12\n" }
+        specify { expect(stdout).to eq value }
       end
     end
 
@@ -62,8 +65,7 @@ describe 'Telepath Executable' do
       let(:args){ ['1'] }
 
       specify { expect(status).to be_success }
-
-      specify { expect(output.stdout).to eq "12\n" }
+      specify { expect(stdout).to eq value }
     end
   end
 end

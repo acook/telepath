@@ -8,13 +8,16 @@ Dir.chdir Telepath.root
 
 module SpecHelpers
   def run *args
-    output = Struct.new :pid, :stdout, :stderr
+    result_class = Struct.new :pid, :stdout, :stderr, :commandline, :status
+    command = args.join ' '
 
-    status = Open4.popen4(*args) do |pid, stdin, stdout, stderr|
-      output = output.new pid, stdout.read, stderr.read
+    result = nil
+    status = Open4.open4(command) do |pid, stdin, stdout, stderr|
+      result = result_class.new pid, stdout.read, stderr.read, command
     end
 
-    [status, output]
+    result.status = status
+    result
   end
 
   def path_env_var; 'TELEPATH_PATH'; end

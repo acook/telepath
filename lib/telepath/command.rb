@@ -15,7 +15,7 @@ module Telepath
         if success then
           Out.info "Added `#{value}' to `#{name}'!"
         else
-          Out.error "Could not add `#{value}' to `#{name}'!"
+          Out.error self, "Could not add `#{value}' to `#{name}'!"
         end
       end
     end
@@ -30,7 +30,7 @@ module Telepath
         if value && !value.empty? then
           Out.data value
         else
-          Out.error @command, "Pattern `#{pattern}' not matched."
+          Out.error self, "Pattern `#{pattern}' not matched."
         end
       end
     end
