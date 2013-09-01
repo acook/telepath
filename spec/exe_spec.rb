@@ -40,7 +40,7 @@ describe 'Telepath Executable' do
 
       specify { expect(status).to be_success }
 
-      it do
+      it 'adds the value to the stack' do
         expect(output.stdout).to eq("Added `12' to `stack'!\n")
       end
     end

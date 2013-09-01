@@ -5,6 +5,7 @@ require 'bundler/setup'
 require 'telepath/version'
 require 'telepath/out'
 require 'telepath/storage'
+require 'telepath/handler'
 require 'telepath/command'
 
 module Telepath

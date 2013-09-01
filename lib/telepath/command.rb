@@ -9,19 +9,8 @@ module Telepath
       parameter 'VALUE', 'value to add'
 
       def execute
-        $s = Storage.new
-        store = $s.store
-
-        key = 'stack'
-
-        store[key] ||= []
-        stack = store[key]
-        stack << value
-        store[key] = stack
-
-        Out.info "Added `#{value}' to `#{key}'!"
-
-        store.close
+        handler = Telepath::Handler.new self
+        handler.add value
       end
     end
 
@@ -29,33 +18,8 @@ module Telepath
       parameter '[PATTERN]', 'pattern to find'
 
       def execute
-        $s = Storage.new
-        store = $s.store
-
-        key = 'stack'
-        store[key] ||= []
-        stack = store[key]
-
-        if pattern && !pattern.empty? then
-          value = stack.include? pattern.to_s
-
-          unless value then
-            value = stack.find do |element|
-               /#{pattern}/ =~ element.to_s
-            end
-          end
-        else
-          value = stack.last
-        end
-
-        if value && !value.empty? then
-          Out.data value
-        else
-          store.close
-          Out.error self, "Pattern `#{pattern}' not matched."
-        end
-
-        store.close
+        handler = Telepath::Handler.new self
+        handler.grab pattern
       end
     end
 
