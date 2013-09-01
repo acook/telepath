@@ -3,6 +3,7 @@ require 'pathname'
 require 'bundler/setup'
 
 require 'telepath/version'
+require 'telepath/out'
 require 'telepath/storage'
 require 'telepath/command'
 

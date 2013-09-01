@@ -1,8 +1,6 @@
 require_relative 'spec_helper'
 
 describe Telepath::Storage do
-  def path_env_var; 'TELEPATH_PATH'; end
-
   subject(:storage){ described_class.new }
   let(:default_file){ '.telepath.db' }
   let(:default_path){ File.expand_path '~' }

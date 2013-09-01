@@ -16,6 +16,10 @@ module SpecHelpers
 
     [status, output]
   end
+
+  def path_env_var; 'TELEPATH_PATH'; end
+  def test_path; Telepath.root.join 'tmp'; end
+  def test_file; test_path.join Telepath::Storage.new.file; end
 end
 
 RSpec.configure do |c|
