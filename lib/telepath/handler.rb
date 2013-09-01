@@ -38,6 +38,14 @@ module Telepath
       end
     end
 
+    def index *indicies
+      index = indicies.first
+
+      with_store 'stack' do |container|
+        container[-(index.to_i + 1)]
+      end
+    end
+
     def storage
       if @storage && @storage.ready? then
         @storage

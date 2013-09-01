@@ -33,10 +33,15 @@ describe Telepath::Handler do
       handler.add 'something'
       expect(storage.stack).to include('something')
     end
+
+    context 'redirected input' do
+      xit 'reads and stores stdin' do
+      end
+    end
   end
 
   describe '#last' do
-    it 'looks up last value' do
+    it 'returns the last value' do
       expect(handler.last).to eq(value)
     end
 
@@ -49,6 +54,24 @@ describe Telepath::Handler do
   end
 
   describe '#index' do
+    before do
+      handler.add 'blah'
+    end
+
+    it 'returns the item at the specified reverse index (1)' do
+      expect(handler.index 1).to eq(value)
+    end
+
+    it 'returns the item at the specified reverse index (0)' do
+      expect(handler.index 0).to eq('blah')
+    end
+
+    it 'does not delete the item' do
+      expect{ handler.index value }.to change{
+        storage.store.adapter.backend.sunrise
+        storage.stack.length
+      }.by(0)
+    end
   end
 
   describe '#lookup' do

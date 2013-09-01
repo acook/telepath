@@ -51,7 +51,7 @@ Actually, thats pretty much it. Telepath just works.
 Usage
 -----
 
-There's currently just 2 commands (more on their way!), here's the output of `tel --help`:
+Here's the output of `tel --help`:
 
 ```sh
 Usage:
@@ -62,11 +62,15 @@ Parameters:
     [ARG] ...                     subcommand arguments
 
 Subcommands:
-    +                             Add item to Telepath
-    ?                             Lookup item from Telepath
+    +, add                        Add item
+    ?, lookup                     Look up item by pattern
+    $, last                       Get most recent item
+    @, index                      Get item from (reverse) index
 
 Options:
-    -q, --quiet                   Only output when absolutely necessary.
+    -q, --quiet                   Only output when absolutely necessary. (default: $TELEPORT_QUIET, or false)
+    -f, --file FILE               Filename of the Teleport store file. (default: $TELEPORT_FILE, or ".telepath.db")
+    -p, --path PATH               Path where the the Teleport store file is located. (default: $TELEPORT_PATH, or "~")
     -h, --help                    print help
 ```
 
@@ -82,13 +86,25 @@ $ tel + "All the things!"
 Use it in Vim...
 
 ```viml
-:r ! tel =
+:r ! tel $
 ```
 
 Use it again in Zsh...
 
 ```zsh
-∴ export which_things=$(tel =)
+∴ export which_things=$(tel $)
+```
+
+Manipulate it with `tr` in zsh and add the result back into Telepath...
+
+```zsh
+∴ tel $ | tr '[:lower:]' '[:upper:]' | tel +
+```
+
+And bring it back into Bash to combine it with the previous version...
+
+```bash
+$ echo $(tel $) $(tel @ 1) | tee result.txt | tel +
 ```
 
 

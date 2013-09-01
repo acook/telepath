@@ -12,11 +12,19 @@ module Telepath
     option ['-p', '--path'], 'PATH', 'Path where the the Teleport store file is located.',
       environment_variable: 'TELEPORT_PATH', default: Telepath::Storage::DEFAULT_PATH
 
-    subcommand ['+', 'add'], 'Add item to Telepath' do
-      parameter 'VALUE ...', 'value to add', attribute_name: 'values'
+    subcommand ['+', 'add'], 'Add item' do
+      parameter '[VALUE] ...', 'value to add', attribute_name: 'values'
 
       def execute
         handler = Telepath::Handler.new self
+        values = self.values || Array.new
+
+        unless $stdin.tty? then
+          buffered = IO.select([$stdin], [], [], 1)
+          values << $stdin.read.strip if buffered && buffered.first && buffered.first.first
+        end
+
+        Out.error self, "No values supplied!" if values.empty?
 
         results = values.map do |value|
           handler.add value
@@ -34,7 +42,7 @@ module Telepath
       end
     end
 
-    subcommand ['?', 'lookup'], 'Lookup item from Telepath' do
+    subcommand ['?', 'lookup'], 'Look up item by pattern' do
       parameter '[PATTERN]', 'pattern to find'
 
       def execute
@@ -49,7 +57,7 @@ module Telepath
       end
     end
 
-    subcommand ['$', 'last'], 'Get most recent item from Telepath' do
+    subcommand ['$', 'last'], 'Get most recent item' do
       def execute
         handler = Telepath::Handler.new self
         value = handler.last
@@ -58,6 +66,25 @@ module Telepath
           Out.data value
         else
           Out.error self, "Telepath is empty, is your storage location configured properly?"
+        end
+      end
+    end
+
+    subcommand ['@', 'index'], 'Get item from (reverse) index' do
+      parameter 'INDEX ...', 'index of item, starting from most recent (0)',
+        attribute_name: :indicies do |i|
+          Integer(i)
+        end
+
+      def execute
+        handler = Telepath::Handler.new self
+        index = indicies.first
+        value = handler.index index
+
+        if value && !value.to_s.empty? then
+          Out.data value
+        else
+          Out.error self, "Hmm, couldn't find anything at that index."
         end
       end
     end

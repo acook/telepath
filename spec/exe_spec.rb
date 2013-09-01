@@ -41,6 +41,10 @@ describe 'Telepath Executable' do
       it 'adds the value to the stack' do
         expect(stdout).to eq("Added [\"12\"] to `stack'!")
       end
+
+      it 'should have no error output' do
+        expect(exe.stderr).to eq ''
+      end
     end
   end
 
