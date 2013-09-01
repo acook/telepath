@@ -34,6 +34,64 @@ What about shared, persistant, distributed, fully decorated multi-client multi-h
 Yeah thats pretty much what I thought. Now go change your pants, I'll still be here when you get back.
 
 
+Installation & Setup
+--------------------
+
+### Install it!
+
+```sh
+gem install telepath
+```
+
+### Set it up!
+
+Actually, thats pretty much it. Telepath just works.
+
+
+Usage
+-----
+
+There's currently just 2 commands (more on their way!), here's the output of `tel --help`:
+
+```sh
+Usage:
+    tel [OPTIONS] SUBCOMMAND [ARG] ...
+
+Parameters:
+    SUBCOMMAND                    subcommand
+    [ARG] ...                     subcommand arguments
+
+Subcommands:
+    +                             Add item to Telepath
+    =                             Grab item from Telepath
+
+Options:
+    -q, --quiet                   Only output when absolutely necessary.
+    -h, --help                    print help
+```
+
+Example
+-------
+
+Dump data into Telepath from Bash...
+
+```bash
+$ tel + "All the things!"
+```
+
+Use it in Vim...
+
+```viml
+:r ! tel =
+```
+
+Use it again in Zsh...
+
+```zsh
+∴ export which_things=$(tel =)
+```
+
+
 Contributing
 ------------
 
@@ -50,5 +108,7 @@ Who made this anyway?
 I'm glad you asked!
 
     Anthony M. Cook 2013
+
+Inspired by this perl script: [oknowton/shstack](https://github.com/oknowton/shstack)
 
 
