@@ -35,17 +35,23 @@ describe Telepath::Handler do
     end
   end
 
-  describe '#grab' do
+  describe '#last' do
+    it 'looks up last value' do
+      expect(handler.last).to eq(value)
+    end
+
+    it 'does not delete the item' do
+      expect{ handler.last }.to change{
+        storage.store.adapter.backend.sunrise
+        storage.stack.length
+      }.by(0)
+    end
   end
 
   describe '#index' do
   end
 
   describe '#lookup' do
-    it 'looks up last value' do
-      expect(handler.lookup).to eq(value)
-    end
-
     it 'does not delete the item' do
       expect{ handler.lookup value }.to change{
         storage.store.adapter.backend.sunrise

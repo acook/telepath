@@ -14,7 +14,13 @@ module Telepath
       [true, name]
     end
 
-    def lookup pattern = nil
+    def last
+      with_store 'stack' do |container|
+        container.last
+      end
+    end
+
+    def lookup pattern
       with_store 'stack' do |container|
 
         if pattern && !pattern.empty? then
