@@ -58,9 +58,14 @@ module Telepath
     end
 
     subcommand ['$', 'last'], 'Get most recent item' do
+      parameter '[COUNT]', 'number of most recent items to get',
+        default: 1 do |i|
+          Integer(i)
+        end
+
       def execute
         handler = Telepath::Handler.new self
-        value = handler.last
+        value = handler.last count
 
         if value && !value.empty? then
           Out.data value

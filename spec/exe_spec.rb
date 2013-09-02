@@ -61,7 +61,6 @@ describe 'Telepath Executable' do
 
     context 'without parameters' do
       context 'with values in telepath' do
-
         specify { expect(status).to be_success }
         specify { expect(stdout).to eq value }
       end
@@ -99,4 +98,32 @@ describe 'Telepath Executable' do
       end
     end
   end
+
+  describe '$ last' do
+    let(:command){ '$' }
+
+    before do
+      handler.add value
+      handler.add next_value
+    end
+
+    context 'without parameters' do
+      context 'with values in telepath' do
+        specify { expect(status).to be_success }
+        specify { expect(stdout).to eq next_value }
+      end
+    end
+
+    context 'with parameters' do
+      let(:args){ ['2'] }
+
+      specify { expect(status).to be_success }
+
+      it 'returns each most recent item on a new line' do
+        expect(stdout).to eq %Q{12\nBoo yah!}
+      end
+    end
+  end
+
+
 end

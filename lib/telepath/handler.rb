@@ -14,9 +14,13 @@ module Telepath
       [true, name]
     end
 
-    def last
+    def last count = nil
       with_store 'stack' do |container|
-        container.last
+        if count.nil? then
+          container.last
+        else
+          container.last count
+        end
       end
     end
 

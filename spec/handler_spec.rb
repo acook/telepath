@@ -8,9 +8,11 @@ describe Telepath::Handler do
 
   let(:storage){ Telepath::Storage.new }
   let(:value){ 'whatever' }
+  let(:next_value){ 'all your bass' }
 
   before do
     handler.add value
+    handler.add next_value
   end
 
   it 'exists' do
@@ -26,7 +28,7 @@ describe Telepath::Handler do
       expect{ handler.add 'something' }.to change{
         storage.store.adapter.backend.sunrise
         storage.stack.length
-      }.from(1).to(2)
+      }.from(2).to(3)
     end
 
     it 'adds the right item' do
@@ -36,13 +38,14 @@ describe Telepath::Handler do
 
     context 'redirected input' do
       xit 'reads and stores stdin' do
+        # how to test?
       end
     end
   end
 
   describe '#last' do
     it 'returns the last value' do
-      expect(handler.last).to eq(value)
+      expect(handler.last).to eq(next_value)
     end
 
     it 'does not delete the item' do
@@ -51,15 +54,15 @@ describe Telepath::Handler do
         storage.stack.length
       }.by(0)
     end
+
+    context 'with a count' do
+      it 'returns the count last items' do
+        expect(handler.last 2).to eq ["whatever", "all your bass"]
+      end
+    end
   end
 
   describe '#index' do
-    before do
-      handler.add next_value
-    end
-
-    let(:next_value){ 'blah' }
-
     it 'returns the item at the specified reverse index (1)' do
       expect(handler.index 1).to eq [value]
     end
@@ -69,14 +72,14 @@ describe Telepath::Handler do
     end
 
     it 'does not delete the item' do
-      expect{ handler.index value }.to change{
+      expect{ handler.index 1 }.to change{
         storage.store.adapter.backend.sunrise
         storage.stack.length
       }.by(0)
     end
 
     context 'multiple indicies' do
-      it 'should return the items in the same order' do
+      it 'should return the items in the same order specified' do
         expect(handler.index 0, 1).to eq [next_value, value]
       end
     end
