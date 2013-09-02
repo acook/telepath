@@ -5,6 +5,10 @@ describe 'Telepath Executable' do
   let(:status){ exe.status }
   let(:stdout){ exe.stdout.strip }
 
+  let(:handler){ Telepath::Handler.new double(Clamp::Command) }
+  let(:value){ '12' }
+  let(:next_value){ 'Boo yah!' }
+
   # override these in context
   let(:command){ '' }
   let(:args){ [] }
@@ -50,8 +54,6 @@ describe 'Telepath Executable' do
 
   describe '? lookup' do
     let(:command){ '?' }
-    let(:handler){ Telepath::Handler.new double(Clamp::Command) }
-    let(:value){ '12' }
 
     before do
       handler.add value
@@ -70,6 +72,31 @@ describe 'Telepath Executable' do
 
       specify { expect(status).to be_success }
       specify { expect(stdout).to eq value }
+    end
+  end
+
+  describe '@ index' do
+    let(:command){ '@' }
+
+    before do
+      handler.add value
+      handler.add next_value
+    end
+
+    context 'with single index' do
+      let(:args){ [1] }
+
+      it 'returns only that item' do
+        expect(stdout).to eq value
+      end
+    end
+
+    context 'with indicies' do
+      let(:args){ [0, 1] }
+
+      it 'returns each index on a new line' do
+        expect(stdout).to eq %Q{Boo yah!\n12}
+      end
     end
   end
 end

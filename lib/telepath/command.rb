@@ -78,8 +78,7 @@ module Telepath
 
       def execute
         handler = Telepath::Handler.new self
-        index = indicies.first
-        value = handler.index index
+        value = handler.index *indicies
 
         if value && !value.to_s.empty? then
           Out.data value

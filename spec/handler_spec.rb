@@ -55,15 +55,17 @@ describe Telepath::Handler do
 
   describe '#index' do
     before do
-      handler.add 'blah'
+      handler.add next_value
     end
 
+    let(:next_value){ 'blah' }
+
     it 'returns the item at the specified reverse index (1)' do
-      expect(handler.index 1).to eq(value)
+      expect(handler.index 1).to eq [value]
     end
 
     it 'returns the item at the specified reverse index (0)' do
-      expect(handler.index 0).to eq('blah')
+      expect(handler.index 0).to eq [next_value]
     end
 
     it 'does not delete the item' do
@@ -71,6 +73,12 @@ describe Telepath::Handler do
         storage.store.adapter.backend.sunrise
         storage.stack.length
       }.by(0)
+    end
+
+    context 'multiple indicies' do
+      it 'should return the items in the same order' do
+        expect(handler.index 0, 1).to eq [next_value, value]
+      end
     end
   end
 
