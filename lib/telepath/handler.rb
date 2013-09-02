@@ -22,19 +22,9 @@ module Telepath
 
     def lookup pattern
       with_store 'stack' do |container|
-
-        if pattern && !pattern.empty? then
-          if container.include? pattern.to_s then
-            pattern.to_s
-          else
-            container.find do |element|
-              /#{pattern}/ =~ element.to_s
-            end
-          end
-        else
-          container.last
+        container.find do |element|
+          /#{pattern}/ =~ element.to_s
         end
-
       end
     end
 
