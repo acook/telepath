@@ -28,8 +28,8 @@ module Telepath
         @handler ||= Telepath::Handler.new self
       end
 
-      def data value, failure_message
-        if value && !value.empty? then
+      def data_out value, failure_message
+        if value then
           Out.data value
         else
           Out.error self, failure_message
@@ -75,47 +75,32 @@ module Telepath
       parameter '[PATTERN]', 'pattern to find'
 
       def execute
-        value = handler.lookup pattern
-
-        if value && !value.empty? then
-          Out.data value
-        else
-          Out.error self, "Pattern `#{pattern}' not matched."
-        end
+        data_out handler.lookup(pattern),
+          "Pattern `#{pattern}' not matched."
       end
     end
 
     class Last < Command
       parameter '[COUNT]', 'number of most recent items to get',
-        default: 1 do |i|
-          Integer(i)
+        default: 1 do |c|
+          Integer c
         end
 
       def execute
-        value = handler.last count
-
-        if value && !value.empty? then
-          Out.data value
-        else
-          Out.error self, "Telepath is empty, is your storage location configured properly?"
-        end
+        data_out handler.last(count),
+          "Telepath is empty, is your storage location configured properly?"
       end
     end
 
     class Index < Command
       parameter 'INDEX ...', 'index of item, starting from most recent (0)',
         attribute_name: :indicies do |i|
-        Integer(i)
+          Integer i
         end
 
       def execute
-        value = handler.index *indicies
-
-        if value && !value.to_s.empty? then
-          Out.data value
-        else
-          Out.error self, "Hmm, couldn't find anything at that index."
-        end
+        data_out handler.index(*indicies),
+          "Hmm, couldn't find anything at that index."
       end
     end
 
