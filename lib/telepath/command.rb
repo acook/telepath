@@ -1,18 +1,29 @@
 require 'clamp'
 
 module Telepath
-  class Command < ::Clamp::Command
+  class CommandLine
+    class Command < Clamp::Command
 
-    option ['-q', '--quiet'], :flag, 'Only output when absolutely necessary.',
-      environment_variable: 'TELEPORT_QUIET', default: false
+      # OPTIONS
 
-    option ['-f', '--file'], 'FILE', 'Filename of the Teleport store file.',
-      environment_variable: 'TELEPORT_FILE', default: Telepath::Storage::DEFAULT_FILE
+      option ['-q', '--quiet'], :flag, 'Only output when absolutely necessary.',
+        environment_variable: 'TELEPORT_QUIET', default: false
 
-    option ['-p', '--path'], 'PATH', 'Path where the the Teleport store file is located.',
-      environment_variable: 'TELEPORT_PATH', default: Telepath::Storage::DEFAULT_PATH
+      option ['-f', '--file'], 'FILE', 'Filename of the Teleport store file.',
+        environment_variable: 'TELEPORT_FILE', default: Telepath::Storage::DEFAULT_FILE
 
-    subcommand ['+', 'add'], 'Add item' do
+      option ['-p', '--path'], 'PATH', 'Path where the the Teleport store file is located.',
+        environment_variable: 'TELEPORT_PATH', default: Telepath::Storage::DEFAULT_PATH
+
+      option ['-t', '--timeout'], 'TIMEOUT', 'How long to wait for stdin.',
+        environment_variable: 'TELEPORT_TIMEOUT', default: 1
+
+      # HELPERS
+
+
+    end
+
+    class Add < Command
       parameter '[VALUE] ...', 'value to add', attribute_name: 'values'
 
       def execute
@@ -42,7 +53,7 @@ module Telepath
       end
     end
 
-    subcommand ['?', 'lookup'], 'Look up item by pattern' do
+    class Lookup < Command
       parameter '[PATTERN]', 'pattern to find'
 
       def execute
@@ -57,7 +68,7 @@ module Telepath
       end
     end
 
-    subcommand ['$', 'last'], 'Get most recent item' do
+    class Last < Command
       parameter '[COUNT]', 'number of most recent items to get',
         default: 1 do |i|
           Integer(i)
@@ -75,10 +86,10 @@ module Telepath
       end
     end
 
-    subcommand ['@', 'index'], 'Get item from (reverse) index' do
+    class Index < Command
       parameter 'INDEX ...', 'index of item, starting from most recent (0)',
         attribute_name: :indicies do |i|
-          Integer(i)
+        Integer(i)
         end
 
       def execute
@@ -93,9 +104,11 @@ module Telepath
       end
     end
 
-    def execute
-      exit 1
+    class Main < Command
+      subcommand ['+', 'add'], 'Add item', Add
+      subcommand ['?', 'lookup'], 'Look up item by pattern', Lookup
+      subcommand ['$', 'last'], 'Get most recent item', Last
+      subcommand ['@', 'index'], 'Get item from (reverse) index', Index
     end
-
   end
 end

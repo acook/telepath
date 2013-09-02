@@ -2,5 +2,5 @@
 
 require_relative '../lib/telepath'
 
-Telepath::Command.run
+Telepath::CommandLine::Main.run
 
