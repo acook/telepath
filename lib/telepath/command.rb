@@ -4,7 +4,7 @@ module Telepath
   class CommandLine
     class Command < Clamp::Command
 
-      # OPTIONS
+      # GLOBAL OPTIONS
 
       option ['-q', '--quiet'], :flag, 'Only output when absolutely necessary.',
         environment_variable: 'TELEPORT_QUIET', default: false
@@ -15,23 +15,41 @@ module Telepath
       option ['-p', '--path'], 'PATH', 'Path where the the Teleport store file is located.',
         environment_variable: 'TELEPORT_PATH', default: Telepath::Storage::DEFAULT_PATH
 
-      option ['-t', '--timeout'], 'TIMEOUT', 'How long to wait for stdin.',
-        environment_variable: 'TELEPORT_TIMEOUT', default: 1
-
       # HELPERS
 
+      def setup_environment
+        # quiet
+        # timeout
+        # file
+        # path
+      end
+
+      def handler
+        @handler ||= Telepath::Handler.new self
+      end
+
+      def data value, failure_message
+        if value && !value.empty? then
+          Out.data value
+        else
+          Out.error self, failure_message
+        end
+      end
 
     end
 
     class Add < Command
-      parameter '[VALUE] ...', 'value to add', attribute_name: 'values'
+      parameter '[ITEM] ...', 'item to add', attribute_name: 'items'
+
+      option ['-t', '--timeout'], 'TIMEOUT', 'How long to wait for stdin.',
+        environment_variable: 'TELEPORT_TIMEOUT', default: 1
 
       def execute
-        handler = Telepath::Handler.new self
-        values = self.values || Array.new
+        values = self.items || Array.new
 
         unless $stdin.tty? then
-          buffered = IO.select([$stdin], [], [], 1)
+          timeout = 1
+          buffered = IO.select([$stdin], [], [], timeout)
           values << $stdin.read.strip if buffered && buffered.first && buffered.first.first
         end
 
@@ -57,7 +75,6 @@ module Telepath
       parameter '[PATTERN]', 'pattern to find'
 
       def execute
-        handler = Telepath::Handler.new self
         value = handler.lookup pattern
 
         if value && !value.empty? then
@@ -75,7 +92,6 @@ module Telepath
         end
 
       def execute
-        handler = Telepath::Handler.new self
         value = handler.last count
 
         if value && !value.empty? then
@@ -93,7 +109,6 @@ module Telepath
         end
 
       def execute
-        handler = Telepath::Handler.new self
         value = handler.index *indicies
 
         if value && !value.to_s.empty? then
