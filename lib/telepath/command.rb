@@ -7,13 +7,13 @@ module Telepath
       # GLOBAL OPTIONS
 
       option ['-q', '--quiet'], :flag, 'Only output when absolutely necessary.',
-        environment_variable: 'TELEPORT_QUIET', default: false
+        environment_variable: 'TELEPATH_QUIET', default: false
 
       option ['-f', '--file'], 'FILE', 'Filename of the Teleport store file.',
-        environment_variable: 'TELEPORT_FILE', default: Telepath::Storage::DEFAULT_FILE
+        environment_variable: 'TELEPATH_FILE', default: Telepath::Storage::DEFAULT_FILE
 
       option ['-p', '--path'], 'PATH', 'Path where the the Teleport store file is located.',
-        environment_variable: 'TELEPORT_PATH', default: Telepath::Storage::DEFAULT_PATH
+        environment_variable: 'TELEPATH_PATH', default: Telepath::Storage::DEFAULT_PATH
 
       # HELPERS
 
@@ -42,7 +42,7 @@ module Telepath
       parameter '[ITEM] ...', 'item to add', attribute_name: 'items'
 
       option ['-t', '--timeout'], 'TIMEOUT', 'How long to wait for stdin.',
-        environment_variable: 'TELEPORT_TIMEOUT', default: 1
+        environment_variable: 'TELEPATH_TIMEOUT', default: 1
 
       def execute
         values = self.items || Array.new
