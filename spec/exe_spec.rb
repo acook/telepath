@@ -50,6 +50,12 @@ describe 'Telepath Executable' do
         expect(exe.stderr).to eq ''
       end
     end
+
+    context 'redirected input' do
+      xit 'reads and stores stdin' do
+        # how to test?
+      end
+    end
   end
 
   describe '? lookup' do
