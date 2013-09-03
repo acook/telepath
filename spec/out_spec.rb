@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe Telepath::Out do
+describe Telepath::Out, unless: ENV['CI'] do
   describe '.info' do
     it 'outputs to stdout' do
       expect(capture { described_class.info 'omghai' }).to eq "omghai\n"

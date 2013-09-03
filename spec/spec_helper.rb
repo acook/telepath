@@ -1,6 +1,7 @@
 begin
   require 'coveralls'
-  Coveralls.wear!
+  require 'json'
+  Coveralls.wear_merged!
 rescue LoadError
   puts "Couldn't find Coveralls gem, skipping!"
 end
