@@ -46,27 +46,33 @@ module Telepath
     end
 
     def path
-      @path ||= Pathname.new(get :path).expand_path
+      @path || set_path
+    end
+
+    def path= new_path
+      set_path new_path
     end
 
     def file
-      @file ||= get :file
+      @file ||= DEFAULT_FILE
     end
 
     def type
-      @type ||= get :type
+      @type ||= DEFAULT_TYPE
     end
 
     protected
+
+    def set_path new_path = nil
+      @path = Pathname.new(new_path || DEFAULT_PATH).expand_path
+    end
 
     def create_store
       Moneta.new type, file: location
     end
 
     def get name
-      env_name   = "TELEPATH_#{name.to_s.upcase}"
       const_name = "DEFAULT_#{name.to_s.upcase}"
-      value      = ENV[env_name]
 
       value && !value.empty? && value || self.class.const_get(const_name)
     end

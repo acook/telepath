@@ -36,11 +36,7 @@ describe Telepath::Storage do
 
       context 'invalid path' do
         before do
-          ENV[path_env_var] = '/this/path/doesnt/exist/hopefully'
-        end
-
-        after do
-          ENV[path_env_var] = nil
+          storage.path = '/this/path/doesnt/exist/hopefully'
         end
 
         specify { expect{path}.to raise_exception }

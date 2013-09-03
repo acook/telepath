@@ -15,25 +15,49 @@ module Telepath
       option ['-p', '--path'], 'PATH', 'Path where the the Teleport store file is located.',
         environment_variable: 'TELEPATH_PATH', default: Telepath::Storage::DEFAULT_PATH
 
+
+      def execute
+        setup_environment
+      end
+
       # HELPERS
 
       def setup_environment
-        # quiet
-        # timeout
-        # file
-        # path
+        Out.quiet! if quiet?
       end
 
       def handler
-        @handler ||= Telepath::Handler.new self
+        @handler ||= Telepath::Handler.new self, storage
+      end
+
+      def storage
+        if @storage then
+          @storage
+        else
+          @storage = create_storage
+        end
       end
 
       def data_out value, failure_message
         if value then
-          Out.data value
+          out.data value
         else
-          Out.error self, failure_message
+          out.error self, failure_message
         end
+      end
+
+      def out
+        quiet? && Out.quiet! || Out.unquiet!
+        Out
+      end
+
+      protected
+
+      def create_storage
+        new_storage = Telepath::Storage.new
+        new_storage.path = path
+        new_storage.file = file
+        new_storage
       end
 
     end

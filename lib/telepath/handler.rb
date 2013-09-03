@@ -1,8 +1,10 @@
 module Telepath
   class Handler
-    def initialize command
+    def initialize command, storage
       @command = command
+      @storage = storage
     end
+    attr_accessor :storage
 
     def add value, name = 'stack'
       with_store name do |container|
@@ -48,14 +50,6 @@ module Telepath
         with_store 'stack' do |container|
           rev_array storage.store.adapter.backend.keys
         end
-      end
-    end
-
-    def storage
-      if @storage && @storage.ready? then
-        @storage
-      else
-        @storage = Telepath::Storage.new
       end
     end
 

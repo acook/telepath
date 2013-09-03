@@ -4,7 +4,7 @@ describe Telepath::Handler do
   before { pre_test_setup }
   after  { post_test_teardown }
 
-  subject(:handler){ described_class.new double(Clamp::Command) }
+  subject(:handler){ described_class.new double(Clamp::Command), storage }
 
   let(:storage){ Telepath::Storage.new }
   let(:value){ 'whatever' }

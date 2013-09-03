@@ -6,7 +6,7 @@ describe 'Telepath Executable' do
   let(:status){ exe.status }
   let(:stdout){ exe.stdout.strip }
 
-  let(:handler){ Telepath::Handler.new double(Clamp::Command) }
+  let(:handler){ Telepath::Handler.new double(Clamp::Command), Telepath::Storage.new }
   let(:value){ '12' }
   let(:next_value){ 'Boo yah!' }
 
@@ -16,9 +16,11 @@ describe 'Telepath Executable' do
 
   before do
     pre_test_setup
+    handler
   end
 
   after do
+    handler.storage.close!
     post_test_teardown
   end
 
