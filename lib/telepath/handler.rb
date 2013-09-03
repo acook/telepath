@@ -7,6 +7,7 @@ module Telepath
     def add value, name = 'stack'
       with_store name do |container|
         container << value
+        container.last
       end
     end
 

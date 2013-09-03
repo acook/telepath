@@ -38,6 +38,10 @@ describe Telepath::Handler do
       expect(storage.stack).to include('something')
     end
 
+    it 'returns the value added according to the database' do
+      expect( handler.add 999 ).to eq 999
+    end
+
     context 'with container specified' do
       let(:container){ 'keepsafe' }
       let(:not_in_stack){ 'are belong to us' }
