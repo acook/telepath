@@ -45,7 +45,9 @@ module Telepath
           rev_array container
         end
       else
-        rev_array storage.store.adapter.backend.keys
+        with_store 'stack' do |container|
+          rev_array storage.store.adapter.backend.keys
+        end
       end
     end
 

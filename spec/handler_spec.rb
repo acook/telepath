@@ -129,6 +129,10 @@ describe Telepath::Handler do
       store_unchanged { handler.list; handler.list default_container }
     end
 
+    xit 'closes the data store when its done' do
+      # how to test?
+    end
+
     context 'without specifying a container' do
       it do
         expect(handler.list).to eq([other_container, default_container])
