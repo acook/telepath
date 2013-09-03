@@ -4,9 +4,7 @@ module Telepath
       @command = command
     end
 
-    def add value
-      name = 'stack'
-
+    def add value, name = 'stack'
       with_store name do |container|
         container << value
       end
@@ -40,6 +38,18 @@ module Telepath
       end
     end
 
+    def list *containers
+      c = containers.first
+
+      if c then
+        with_store c do |container|
+          rev_array container
+        end
+      else
+        rev_array storage.store.adapter.backend.keys
+      end
+    end
+
     def storage
       if @storage && @storage.ready? then
         @storage
@@ -49,6 +59,10 @@ module Telepath
     end
 
     protected
+
+    def rev_array list_of_things
+      Array(list_of_things).reverse
+    end
 
     def with_store name = 'stack'
       container = storage.store[name] || Array.new

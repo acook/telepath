@@ -9,6 +9,7 @@ describe Telepath::Handler do
   let(:storage){ Telepath::Storage.new }
   let(:value){ 'whatever' }
   let(:next_value){ 'all your bass' }
+  let(:default_container){ 'stack' }
 
   before do
     handler.add value
@@ -24,6 +25,7 @@ describe Telepath::Handler do
   end
 
   describe '#add' do
+
     it 'adds 1 item' do
       expect{ handler.add 'something' }.to change{
         storage.store.adapter.backend.sunrise
@@ -34,6 +36,23 @@ describe Telepath::Handler do
     it 'adds the right item' do
       handler.add 'something'
       expect(storage.stack).to include('something')
+    end
+
+    context 'with container specified' do
+      let(:container){ 'keepsafe' }
+      let(:not_in_stack){ 'are belong to us' }
+
+      before do
+        handler.add not_in_stack, container
+      end
+
+      it do
+        expect(handler.list container).to include not_in_stack
+      end
+
+      it do
+        expect(handler.list).not_to include not_in_stack
+      end
     end
 
     context 'redirected input' do
@@ -49,10 +68,7 @@ describe Telepath::Handler do
     end
 
     it 'does not delete the item' do
-      expect{ handler.last }.to change{
-        storage.store.adapter.backend.sunrise
-        storage.stack.length
-      }.by(0)
+      store_unchanged { handler.last }
     end
 
     context 'with a count' do
@@ -72,10 +88,7 @@ describe Telepath::Handler do
     end
 
     it 'does not delete the item' do
-      expect{ handler.index 1 }.to change{
-        storage.store.adapter.backend.sunrise
-        storage.stack.length
-      }.by(0)
+      store_unchanged { handler.index 1 }
     end
 
     context 'multiple indicies' do
@@ -87,10 +100,7 @@ describe Telepath::Handler do
 
   describe '#lookup' do
     it 'does not delete the item' do
-      expect{ handler.lookup value }.to change{
-        storage.store.adapter.backend.sunrise
-        storage.stack.length
-      }.by(0)
+      store_unchanged { handler.lookup value }
     end
 
     context 'pattern matching' do
@@ -104,6 +114,31 @@ describe Telepath::Handler do
         it 'matches parts of numbers' do
           expect(handler.lookup('1')).to eq(value)
         end
+      end
+    end
+  end
+
+  describe '#list' do
+
+    let(:other_container){ 'keepsafe' }
+
+    before do
+      handler.add 'not_in_stack', other_container
+    end
+
+    it 'does not alter the store' do
+      store_unchanged { handler.list; handler.list default_container }
+    end
+
+    context 'without specifying a container' do
+      it do
+        expect(handler.list).to eq([other_container, default_container])
+      end
+    end
+
+    context 'with container specified' do
+      it do
+        expect(handler.list default_container).to eq ['all your bass', 'whatever']
       end
     end
   end

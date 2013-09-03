@@ -28,6 +28,13 @@ module SpecHelpers
   def unassign_test_path; ENV[path_env_var] = nil; end
   def pre_test_setup; assign_test_path; cleanup_db; end
   def post_test_teardown; unassign_test_path; cleanup_db; end
+
+  def store_unchanged
+    expect{ yield }.to change{
+      storage.store.adapter.backend.sunrise
+      storage.stack.length
+    }.by(0)
+  end
 end
 
 RSpec.configure do |c|
