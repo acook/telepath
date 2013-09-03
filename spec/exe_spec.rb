@@ -1,7 +1,8 @@
 require_relative 'spec_helper'
 
 describe 'Telepath Executable' do
-  let(:exe){ run "./bin/tel #{command} #{args.join ' '}" }
+  let(:commandline){ "./bin/tel #{command} #{args.join ' '}" }
+  let(:exe){ run commandline }
   let(:status){ exe.status }
   let(:stdout){ exe.stdout.strip }
 
@@ -73,18 +74,18 @@ describe 'Telepath Executable' do
       handler.add value
     end
 
-    context 'without parameters' do
-      context 'with values in telepath' do
+    context 'with single value in telepath' do
+      context 'without parameters' do
         specify { expect(status).to be_success }
         specify { expect(stdout).to eq value }
       end
-    end
 
-    context 'with parameters' do
-      let(:args){ ['1'] }
+      context 'with parameters' do
+        let(:args){ ['1'] }
 
-      specify { expect(status).to be_success }
-      specify { expect(stdout).to eq value }
+        specify { expect(status).to be_success }
+        specify { expect(stdout).to eq value }
+      end
     end
   end
 
