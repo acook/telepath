@@ -1,3 +1,10 @@
+begin
+  require 'coveralls'
+  Coveralls.wear!
+rescue LoadError
+  puts "Couldn't find Coveralls gem, skipping!"
+end
+
 require_relative '../lib/telepath'
 
 require 'rspec'
