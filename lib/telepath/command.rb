@@ -41,34 +41,46 @@ module Telepath
     class Add < Command
       parameter '[ITEM] ...', 'item to add', attribute_name: 'items'
 
-      option ['-t', '--timeout'], 'TIMEOUT', 'How long to wait for stdin.',
+      option ['-t', '--timeout'], 'TIMEOUT', 'How long to wait for stdin (in seconds).',
         environment_variable: 'TELEPATH_TIMEOUT', default: 1
 
       def execute
-        values = self.items || Array.new
+        container = 'stack'
+        values    = self.items || Array.new
 
-        unless $stdin.tty? then
-          timeout = 1
-          buffered = IO.select([$stdin], [], [], timeout)
-          values << $stdin.read.strip if buffered && buffered.first && buffered.first.first
-        end
+        values << read_stdin if stdin?
 
         Out.error self, "No values supplied!" if values.empty?
 
-        results = values.map do |value|
-          handler.add value
+        values.each do |value|
+          handler.add value, container
+          # check that value was added correctly, individually?
         end
 
-        success = results.all?{|r|r.first}
-        name    = results.first.last
+        info values, container
+      end
 
-        if success then
-          Out.info "Added [#{values.map(&:inspect).join ', '}] to `#{name}'!"
-        else
-          failures = values.reject.with_index{|_, i| results[i].first}
-          Out.error self, "Could not add [#{failures.map().join ', '}] to `#{name}'!"
+      def info values, container
+        value_text = values.length == 1 ? values.first : "[#{values.join ', '}]"
+        Out.info "Added #{value_text} to #{container}!"
+      end
+
+      def read_stdin
+        $stdin.read.strip if stdin?
+      end
+
+      def stdin?
+        if not $stdin.tty? then
+          buffered = IO.select([$stdin], [], [], timeout)
+          buffered && buffered.first && buffered.first.first
         end
       end
+
+      # check that values were added, as a group?
+      #def verify_values_added values
+      #  failures = values.reject.with_index{|_, i| results[i].first}
+      #  Out.error self, "Could not add [#{failures.map().join ', '}] to `#{container}'!"
+      #end
     end
 
     class Lookup < Command

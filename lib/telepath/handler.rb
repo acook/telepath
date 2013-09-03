@@ -8,8 +8,6 @@ module Telepath
       with_store name do |container|
         container << value
       end
-
-      [true, name]
     end
 
     def last count = nil
