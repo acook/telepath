@@ -28,12 +28,16 @@ Gem::Specification.new do |spec|
   # development
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake'
-  # debugging
-  spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'pry-theme'
   # testing
   spec.add_development_dependency 'rspec', '~> 2'
   spec.add_development_dependency 'open4'
-  # metrics
-  spec.add_development_dependency 'metric_fu'
+
+  # don't include these on CI
+  unless ENV['CI'] then
+    # debugging
+    spec.add_development_dependency 'pry'
+    spec.add_development_dependency 'pry-theme'
+    # metrics
+    spec.add_development_dependency 'metric_fu'
+  end
 end
