@@ -51,13 +51,11 @@ describe Telepath::Storage do
   context 'with test location' do
 
     before :all do
-      ENV[path_env_var] = test_path.to_s
-      test_file.delete if test_file.exist?
+      pre_test_setup
     end
 
     after :all do
-      ENV[path_env_var] = nil
-      test_file.delete if test_file.exist?
+      post_test_teardown
     end
 
     describe '.new' do
