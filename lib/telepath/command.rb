@@ -104,11 +104,22 @@ module Telepath
       end
     end
 
+    class List < Command
+      parameter '[CONTAINER] ...', 'container to list contents of',
+        attribute_name: :containers
+
+      def execute
+        data_out handler.list(*containers),
+          "Container empty (or no container with that name)."
+      end
+    end
+
     class Main < Command
       subcommand ['+', 'add'], 'Add item', Add
       subcommand ['?', 'lookup'], 'Look up item by pattern', Lookup
       subcommand ['$', 'last'], 'Get most recent item', Last
       subcommand ['@', 'index'], 'Get item from (reverse) index', Index
+      subcommand ['list'], 'List known containers and contents', List
     end
   end
 end

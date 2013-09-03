@@ -69,10 +69,14 @@ module Telepath
 
       result = yield container
 
-      storage.store[name] = container
+      storage.store[name] = container if present? container
       result
     ensure
       storage.store.close
+    end
+
+    def present? value
+      !!value && ((value.respond_to?(:empty?) || true) && !value.empty?)
     end
   end
 end

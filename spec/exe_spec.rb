@@ -131,5 +131,39 @@ describe 'Telepath Executable' do
     end
   end
 
+  describe 'list' do
+    let(:command){ 'list' }
+
+    before do
+      handler.add value
+      handler.add next_value
+      handler.add 'something else', 'another container'
+    end
+
+    context 'without parameters' do
+      it 'lists known containers, most recent first' do
+        expect(stdout).to eq "another container\nstack"
+      end
+    end
+
+    context 'with contaienr specified' do
+      let(:args){ ['"another container"'] }
+
+      it 'lists the contents of the specified container' do
+        expect(stdout).to eq 'something else'
+      end
+    end
+
+    context 'with nonexistant container' do
+      let(:args){ ['"totally does not exist"'] }
+      let(:container_list_exe){ run './bin/tel list' }
+      let(:container_list){ container_list_exe.stdout.strip }
+
+      it 'does not create listed containers' do
+        expect(stdout).to eq ''
+        expect(container_list).to eq "another container\nstack"
+      end
+    end
+  end
 
 end
