@@ -20,6 +20,29 @@ module SpecHelpers
     result
   end
 
+  def capture
+    readme, writeme = IO.pipe
+    pid = fork do
+      $stdout.reopen writeme
+      readme.close
+
+      yield
+    end
+
+    writeme.close
+    output = readme.read
+    Process.waitpid(pid)
+
+    output
+  end
+
+  def store_unchanged
+    expect{ yield }.to change{
+      storage.store.adapter.backend.sunrise
+      storage.stack.length
+    }.by(0)
+  end
+
   def path_env_var; 'TELEPATH_PATH'; end
   def test_path; Telepath.root.join 'tmp'; end
   def test_file; test_path.join Telepath::Storage.new.file; end
@@ -28,13 +51,6 @@ module SpecHelpers
   def unassign_test_path; ENV[path_env_var] = nil; end
   def pre_test_setup; assign_test_path; cleanup_db; end
   def post_test_teardown; unassign_test_path; cleanup_db; end
-
-  def store_unchanged
-    expect{ yield }.to change{
-      storage.store.adapter.backend.sunrise
-      storage.stack.length
-    }.by(0)
-  end
 end
 
 RSpec.configure do |c|
