@@ -8,16 +8,27 @@ module Telepath
     DEFAULT_FILE = '.telepath.db'
     DEFAULT_TYPE = :Daybreak
 
-    def store
-      @store ||= create_store
-    end
+    attr_accessor :file, :path
 
     def stack
       store['stack'] || Array.new
     end
 
+    def store
+      if ready? then
+        @store
+      else
+        @store = create_store
+      end
+    end
+
     def ready?
-      !store.adapter.backend.closed?
+      !!@store && !@store.adapter.backend.closed?
+    end
+
+    def close!
+      @store.close if @store.respond_to? :close
+      @store = nil
     end
 
     ### -----

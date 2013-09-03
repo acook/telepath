@@ -73,7 +73,7 @@ module Telepath
       storage.store[name] = container if present? container
       result
     ensure
-      storage.store.close
+      storage.close!
     end
 
     def present? value

@@ -21,7 +21,7 @@ describe Telepath::Handler do
   end
 
   after do
-    storage.store.close unless storage.store.adapter.backend.closed?
+    storage.close!
   end
 
   describe '#add' do
