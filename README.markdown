@@ -66,12 +66,13 @@ Subcommands:
     ?, lookup                     Look up item by pattern
     $, last                       Get most recent item
     @, index                      Get item from (reverse) index
+    list                          List known containers and contents
 
 Options:
-    -q, --quiet                   Only output when absolutely necessary. (default: $TELEPORT_QUIET, or false)
-    -f, --file FILE               Filename of the Teleport store file. (default: $TELEPORT_FILE, or ".telepath.db")
-    -p, --path PATH               Path where the the Teleport store file is located. (default: $TELEPORT_PATH, or "~")
     -h, --help                    print help
+    -q, --quiet                   Only output when absolutely necessary. (default: $TELEPATH_QUIET, or false)
+    -f, --file FILE               Filename of the Teleport store file. (default: $TELEPATH_FILE, or ".telepath.db")
+    -p, --path PATH               Path where the the Teleport store file is located. (default: $TELEPATH_PATH, or "~")
 ```
 
 Example
