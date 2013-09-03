@@ -6,6 +6,7 @@ Spooky action at a distance.
 [![Gem Version](https://badge.fury.io/rb/telepath.png)](http://badge.fury.io/rb/telepath)
 [![Build Status](https://travis-ci.org/acook/telepath.png?branch=master)](https://travis-ci.org/acook/telepath)
 [![Code Climate](https://codeclimate.com/github/acook/telepath.png)](https://codeclimate.com/github/acook/telepath)
+[![Coverage Status](https://coveralls.io/repos/acook/telepath/badge.png)](https://coveralls.io/r/acook/telepath)
 [![Dependency Status](https://gemnasium.com/acook/telepath.png)](https://gemnasium.com/acook/telepath)
 
 What the hell is this all about?
