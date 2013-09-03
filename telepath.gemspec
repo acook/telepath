@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
 
   # commandline
   spec.add_dependency 'clamp'
-  #spec.add_dependency 'highline'
 
   # development
   spec.add_development_dependency 'bundler', '~> 1.3'
@@ -35,5 +34,6 @@ Gem::Specification.new do |spec|
   # testing
   spec.add_development_dependency 'rspec', '~> 2'
   spec.add_development_dependency 'open4'
-  #spec.add_development_dependency 'ffaker'
+  # metrics
+  spec.add_development_dependency 'metric_fu'
 end
