@@ -44,7 +44,7 @@ describe 'Telepath Executable' do
       specify { expect(status).to be_success }
 
       it 'adds the value to the stack' do
-        expect(stdout).to eq("Added 12 to stack!")
+        expect(stdout).to eq('Added 12 to stack!')
       end
 
       it 'should have no error output' do
@@ -56,7 +56,7 @@ describe 'Telepath Executable' do
       let(:args){ ['12', 'foo/bar'] }
 
       it 'adds the value to the stack' do
-        expect(stdout).to eq("Added [12, foo/bar] to stack!")
+        expect(stdout).to eq('Added [12, foo/bar] to stack!')
       end
     end
 

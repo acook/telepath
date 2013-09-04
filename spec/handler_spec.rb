@@ -72,7 +72,7 @@ describe Telepath::Handler do
 
     context 'with a count' do
       it 'returns the count last items' do
-        expect(handler.last 2).to eq ["whatever", "all your bass"]
+        expect(handler.last 2).to eq ['whatever', 'all your bass']
       end
     end
   end

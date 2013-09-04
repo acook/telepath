@@ -6,13 +6,13 @@ module Telepath
 
       # GLOBAL OPTIONS
 
-      option ['-q', '--quiet'], :flag, 'Only output when absolutely necessary.',
+      option %w{-q --quiet}, :flag, 'Only output when absolutely necessary.',
         environment_variable: 'TELEPATH_QUIET', default: false
 
-      option ['-f', '--file'], 'FILE', 'Filename of the Teleport store file.',
+      option %w{-f --file}, 'FILE', 'Filename of the Teleport store file.',
         environment_variable: 'TELEPATH_FILE', default: Telepath::Storage::DEFAULT_FILE
 
-      option ['-p', '--path'], 'PATH', 'Path where the the Teleport store file is located.',
+      option %w{-p --path}, 'PATH', 'Path where the the Teleport store file is located.',
         environment_variable: 'TELEPATH_PATH', default: Telepath::Storage::DEFAULT_PATH
 
       # HELPERS
@@ -41,7 +41,7 @@ module Telepath
     class Add < Command
       parameter '[ITEM] ...', 'item to add', attribute_name: 'items'
 
-      option ['-t', '--timeout'], 'TIMEOUT', 'How long to wait for stdin (in seconds).',
+      option %w{-t --timeout}, 'TIMEOUT', 'How long to wait for stdin (in seconds).',
         environment_variable: 'TELEPATH_TIMEOUT', default: 1
 
       def execute
@@ -50,7 +50,7 @@ module Telepath
 
         values << read_stdin if stdin?
 
-        Out.error self, "No values supplied!" if values.empty?
+        Out.error self, 'No values supplied!' if values.empty?
 
         values.each do |value|
           handler.add value, container
@@ -70,17 +70,11 @@ module Telepath
       end
 
       def stdin?
-        if not $stdin.tty? then
+        unless $stdin.tty? then
           buffered = IO.select([$stdin], [], [], timeout)
           buffered && buffered.first && buffered.first.first
         end
       end
-
-      # check that values were added, as a group?
-      #def verify_values_added values
-      #  failures = values.reject.with_index{|_, i| results[i].first}
-      #  Out.error self, "Could not add [#{failures.map().join ', '}] to `#{container}'!"
-      #end
     end
 
     class Lookup < Command
@@ -100,7 +94,7 @@ module Telepath
 
       def execute
         data_out handler.last(count),
-          "Telepath is empty, is your storage location configured properly?"
+          'Telepath is empty, is your storage location configured properly?'
       end
     end
 
@@ -122,7 +116,7 @@ module Telepath
 
       def execute
         data_out handler.list(*containers),
-          "Container empty (or no container with that name)."
+          'Container empty (or no container with that name).'
       end
     end
 

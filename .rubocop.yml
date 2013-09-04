@@ -1,0 +1,44 @@
+# TODO : Add documentation, even though this isn't a library gem
+Documentation:
+  Enabled: false
+
+# Rubocop advocates the "hanging block" style
+AlignParameters:
+  Enabled: false
+BlockAlignment:
+  Enabled: false
+
+# Less line noise
+DefWithoutParentheses:
+  Enabled: false
+
+# Less concise, but more readable
+EmptyLiteral:
+  Enabled: false
+
+# 'then' endcaps the expression
+MultilineIfThen:
+  Enabled: false
+
+# We need this since Clamp behaves oddly
+# with its dynamically defined methods
+RedundantSelf:
+  Enabled: false
+
+# Block braces are grouped with the method
+SpaceAroundBraces:
+  Enabled: false
+
+# Allow def var?; !!@var; end methods
+TrivialAccessors:
+  #ExactNameMatch: true
+  AllowPredicates: true
+
+# This is mostly triggered on text-heavy and/or raise lines
+# Maybe find another way to handle text blocks?
+LineLength:
+  Max: 120
+
+# Just no
+AssignmentInCondition:
+  AllowSafeAssignment: false

@@ -1,0 +1,23 @@
+inherit_from: ../.rubocop.yml
+
+# I don't think we need documentation in the specs
+Documentation:
+  Enabled: false
+
+# Currently some tests do this inside of expect()
+SpaceInsideParens:
+  Enabled: false
+
+# Only used in spec_helper
+EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+Semicolon:
+  AllowAfterParameterListInOneLineMethods: true
+  AllowBeforeEndInOneLineMethods: true
+  # disabling for now, since we use this inside expect()
+  Enabled: false
+
+SingleLineMethods:
+  Enabled: false
+

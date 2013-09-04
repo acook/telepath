@@ -14,4 +14,5 @@ unless ENV['CI'] then
 
   # metrics
   gem 'metric_fu'
+  gem 'rubocop', git: 'https://github.com/bbatsov/rubocop.git'
 end
