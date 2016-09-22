@@ -125,7 +125,7 @@ Who made this anyway?
 
 I'm glad you asked!
 
-    Anthony M. Cook 2013-2014
+    Anthony M. Cook 2013-2016
 
 Inspired by this perl script: [oknowton/shstack](https://github.com/oknowton/shstack)
 
