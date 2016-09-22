@@ -5,7 +5,7 @@ rvm:
   - 2.0.0
 
   - ruby-head
-  - jruby-19mode
+  - jruby-21mode
 
 before_install:
   - gem update bundler
@@ -21,4 +21,4 @@ after_script:
 matrix:
   allow_failures:
     - rvm: ruby-head
-    - rvm: jruby-19mode
+    - rvm: jruby-21mode
