@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['anthonymichaelcook@gmail.com']
   spec.description   = %q{Sorta like IPC for people to GTD.}
   spec.summary       = %q{Spooky action at a distance.}
-  spec.homepage      = 'http://github.com/acook/telepath#readme'
+  spec.homepage      = 'http://codeberg.org/acook/telepath#readme'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
